@@ -111,6 +111,7 @@
 {
     NSURLSessionDataTask *dataTask = [self dataTaskWithHTTPMethod:@"GET" URLString:URLString parameters:parameters success:success failure:failure];
 
+    dataTask.taskDescription = [NSString stringWithFormat:@"Data task. Method:GET, path:%@", URLString];
     [dataTask resume];
 
     return dataTask;
@@ -138,7 +139,8 @@
                        failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure
 {
     NSURLSessionDataTask *dataTask = [self dataTaskWithHTTPMethod:@"POST" URLString:URLString parameters:parameters success:success failure:failure];
-
+    dataTask.taskDescription = [NSString stringWithFormat:@"Data task. Method: POST, path:%@", URLString];
+    
     [dataTask resume];
 
     return dataTask;
@@ -176,7 +178,7 @@
             }
         }
     }];
-
+    task.taskDescription = [NSString stringWithFormat:@"Data task. Method:POST with constructingBodyWithBlock, path:%@", URLString];
     [task resume];
 
     return task;
