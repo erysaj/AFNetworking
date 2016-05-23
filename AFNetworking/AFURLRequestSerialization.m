@@ -1300,7 +1300,9 @@ typedef enum {
 
     if (parameters) {
         if (![mutableRequest valueForHTTPHeaderField:@"Content-Type"]) {
-            [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+            NSString *charset = (__bridge NSString *)CFStringConvertEncodingToIANACharSetName(CFStringConvertNSStringEncodingToEncoding(self.stringEncoding));
+            //[mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+            [mutableRequest setValue:[NSString stringWithFormat:@"application/json; charset=%@", charset] forHTTPHeaderField:@"Content-Type"];
         }
 
         [mutableRequest setHTTPBody:[NSJSONSerialization dataWithJSONObject:parameters options:self.writingOptions error:error]];
