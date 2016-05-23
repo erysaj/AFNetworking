@@ -159,20 +159,20 @@
 /**
  The dispatch queue for `completionBlock`. If `NULL` (default), the main queue is used.
  */
-#if OS_OBJECT_HAVE_OBJC_SUPPORT
-@property (nonatomic, strong) dispatch_queue_t completionQueue;
-#else
+//#if OS_OBJECT_HAVE_OBJC_SUPPORT
+//@property (nonatomic, strong) dispatch_queue_t completionQueue;
+//#else
 @property (nonatomic, assign) dispatch_queue_t completionQueue;
-#endif
+//#endif
 
 /**
  The dispatch group for `completionBlock`. If `NULL` (default), a private dispatch group is used.
  */
-#if OS_OBJECT_HAVE_OBJC_SUPPORT
-@property (nonatomic, strong) dispatch_group_t completionGroup;
-#else
+//#if OS_OBJECT_HAVE_OBJC_SUPPORT
+//@property (nonatomic, strong) dispatch_group_t completionGroup;
+//#else
 @property (nonatomic, assign) dispatch_group_t completionGroup;
-#endif
+//#endif
 
 ///---------------------------------
 /// @name Working Around System Bugs
