@@ -248,6 +248,28 @@ forHTTPHeaderField:(NSString *)field;
                               constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block
                                                   error:(NSError * __autoreleasing *)error;
 
+
+
+
+/**
+ Creates an `NSMutableURLRequest` object with the specified NSMutableURLRequest, and constructs a `multipart/form-data` HTTP body, using the specified parameters and multipart form data block.
+ 
+ Multipart form requests are automatically streamed, reading files directly from disk along with in-memory data in a single HTTP body. The resulting `NSMutableURLRequest` object has an `HTTPBodyStream` property, so refrain from setting `HTTPBodyStream` or `HTTPBody` on this request object, as it will clear out the multipart form body stream.
+ 
+ @param baseRequest The NSMutableURLRequest.
+ @param parameters The parameters to be encoded and set in the request HTTP body.
+ @param block A block that takes a single argument and appends data to the HTTP body. The block argument is an object adopting the `AFMultipartFormData` protocol.
+ @param error The error that occurred while constructing the request.
+ 
+ @return An `NSMutableURLRequest` object
+ 
+*/
+- (NSMutableURLRequest *)multipartFormRequestWithRequest:(NSMutableURLRequest *)baseRequest
+                                              parameters:(NSDictionary *)parameters
+                               constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block
+                                                   error:(NSError *__autoreleasing *)error;
+
+
 /**
  Creates an `NSMutableURLRequest` by removing the `HTTPBodyStream` from a request, and asynchronously writing its contents into the specified file, invoking the completion handler when finished.
 

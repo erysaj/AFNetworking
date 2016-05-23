@@ -416,6 +416,44 @@ forHTTPHeaderField:(NSString *)field
     return [formData requestByFinalizingMultipartFormData];
 }
 
+
+- (NSMutableURLRequest *)multipartFormRequestWithRequest:(NSMutableURLRequest *)baseRequest
+                                             parameters:(NSDictionary *)parameters
+                              constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block
+                                                  error:(NSError *__autoreleasing *)error
+{
+    NSParameterAssert(baseRequest);
+    NSString *method = baseRequest.HTTPMethod;
+    NSParameterAssert(![method isEqualToString:@"GET"] && ![method isEqualToString:@"HEAD"]);
+    
+    __block AFStreamingMultipartFormData *formData = [[AFStreamingMultipartFormData alloc] initWithURLRequest:baseRequest stringEncoding:NSUTF8StringEncoding];
+    
+    if (parameters) {
+        for (AFQueryStringPair *pair in AFQueryStringPairsFromDictionary(parameters)) {
+            NSData *data = nil;
+            if ([pair.value isKindOfClass:[NSData class]]) {
+                data = pair.value;
+            } else if ([pair.value isEqual:[NSNull null]]) {
+                data = [NSData data];
+            } else {
+                data = [[pair.value description] dataUsingEncoding:self.stringEncoding];
+            }
+            
+            if (data) {
+                [formData appendPartWithFormData:data name:[pair.field description]];
+            }
+        }
+    }
+    
+    if (block) {
+        block(formData);
+    }
+    
+    return [formData requestByFinalizingMultipartFormData];
+}
+
+
+
 - (NSMutableURLRequest *)requestWithMultipartFormRequest:(NSURLRequest *)request
                              writingStreamContentsToFile:(NSURL *)fileURL
                                        completionHandler:(void (^)(NSError *error))handler
